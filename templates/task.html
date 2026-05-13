@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Your Tasks</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Add Task</button>
+
+</form>
+
+<hr>
+
+<ul>
+
+    {% for task in tasks %}
+
+        <li>
+
+            {{ task.title }}
+
+            ({{ task.subject.name }})
+
+        </li>
+
+    {% empty %}
+
+        <li>No tasks yet.</li>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
