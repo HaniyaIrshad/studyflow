@@ -16,33 +16,63 @@
 
 <hr>
 
+<h3>Pending Tasks</h3>
+
 <ul>
 
-    {% for task in tasks %}
+    {% for task in pending_tasks %}
 
         <li>
 
-            {% if task.completed %}
-
-                ✔ <s>{{ task.title }}</s>
-
-            {% else %}
-
-                ✘ {{ task.title }}
-
-            {% endif %}
+            ✘ {{ task.title }}
 
             ({{ task.subject.name }})
 
             <a href="/tasks/toggle/{{ task.id }}/">
-                Toggle
+                Complete
+            </a>
+
+            <a href="/tasks/delete/{{ task.id }}/">
+                Delete
             </a>
 
         </li>
 
     {% empty %}
 
-        <li>No tasks yet.</li>
+        <li>No pending tasks.</li>
+
+    {% endfor %}
+
+</ul>
+
+<hr>
+
+<h3>Completed Tasks</h3>
+
+<ul>
+
+    {% for task in completed_tasks %}
+
+        <li>
+
+            ✔ <s>{{ task.title }}</s>
+
+            ({{ task.subject.name }})
+
+            <a href="/tasks/toggle/{{ task.id }}/">
+                Undo
+            </a>
+
+            <a href="/tasks/delete/{{ task.id }}/">
+                Delete
+            </a>
+
+        </li>
+
+    {% empty %}
+
+        <li>No completed tasks.</li>
 
     {% endfor %}
 

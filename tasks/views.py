@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from .models import Subject,Task
-from .forms import SubjectForm,TaskForm
+from .models import Subject, Task
+from .forms import SubjectForm, TaskForm
+
 
 def home(request):
     return render(request, 'home.html')
 
+
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+
 @login_required
 def subjects(request):
 
@@ -28,14 +32,18 @@ def subjects(request):
             return redirect('subjects')
 
     else:
+
         form = SubjectForm()
 
-    subjects = Subject.objects.filter(user=request.user)
+    subjects = Subject.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
 
     return render(request, 'subjects.html', {
         'form': form,
         'subjects': subjects
     })
+
 
 @login_required
 def tasks(request):
@@ -44,10 +52,16 @@ def tasks(request):
 
         form = TaskForm(request.POST)
 
+        # show only current user's subjects
+        form.fields['subject'].queryset = Subject.objects.filter(
+            user=request.user
+        )
+
         if form.is_valid():
 
             task = form.save(commit=False)
 
+            # security check
             if task.subject.user == request.user:
 
                 task.save()
@@ -58,14 +72,26 @@ def tasks(request):
 
         form = TaskForm()
 
-        form.fields['subject'].queryset = Subject.objects.filter(user=request.user)
+        form.fields['subject'].queryset = Subject.objects.filter(
+            user=request.user
+        )
 
-    tasks = Task.objects.filter(subject__user=request.user)
+    pending_tasks = Task.objects.filter(
+        subject__user=request.user,
+        completed=False
+    ).order_by('-created_at')
+
+    completed_tasks = Task.objects.filter(
+        subject__user=request.user,
+        completed=True
+    ).order_by('-created_at')
 
     return render(request, 'tasks.html', {
         'form': form,
-        'tasks': tasks
+        'pending_tasks': pending_tasks,
+        'completed_tasks': completed_tasks
     })
+
 
 @login_required
 def toggle_task(request, task_id):
@@ -81,3 +107,18 @@ def toggle_task(request, task_id):
     task.save()
 
     return redirect('tasks')
+
+
+@login_required
+def delete_task(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        subject__user=request.user
+    )
+
+    task.delete()
+
+    return redirect('tasks')
+
