@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Your Subjects</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Add Subject</button>
+
+</form>
+
+<hr>
+
+<ul>
+
+    {% for subject in subjects %}
+
+        <li>{{ subject.name }}</li>
+
+    {% empty %}
+
+        <li>No subjects added yet.</li>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
