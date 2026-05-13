@@ -1,27 +1,14 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow</title>
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-
-    <nav>
+<nav>
 
     <a href="/">Home</a>
 
     {% if user.is_authenticated %}
 
         <span>Hello, {{ user.username }}</span>
+
         <a href="/dashboard/">Dashboard</a>
         <a href="/subjects/">Subjects</a>
         <a href="/tasks/">Tasks</a>
-
         <a href="/users/logout/">Logout</a>
 
     {% else %}
@@ -31,10 +18,9 @@
 
     {% endif %}
 
-
 </nav>
 
 <hr>
 
-</body>
-</html>
+{% block content %}
+{% endblock %}

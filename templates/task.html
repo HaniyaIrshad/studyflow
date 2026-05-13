@@ -22,9 +22,21 @@
 
         <li>
 
-            {{ task.title }}
+            {% if task.completed %}
+
+                ✔ <s>{{ task.title }}</s>
+
+            {% else %}
+
+                ✘ {{ task.title }}
+
+            {% endif %}
 
             ({{ task.subject.name }})
+
+            <a href="/tasks/toggle/{{ task.id }}/">
+                Toggle
+            </a>
 
         </li>
 

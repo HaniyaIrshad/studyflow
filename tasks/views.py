@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .models import Subject,Task
@@ -66,3 +66,18 @@ def tasks(request):
         'form': form,
         'tasks': tasks
     })
+
+@login_required
+def toggle_task(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        subject__user=request.user
+    )
+
+    task.completed = not task.completed
+
+    task.save()
+
+    return redirect('tasks')
