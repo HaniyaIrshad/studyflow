@@ -24,23 +24,33 @@
 
         <li>
 
-            ✘ {{ task.title }}
+    ✘ {{ task.title }}
 
-            ({{ task.subject.name }})
+    {% if task.due_date and task.due_date < today %}
 
-            <a href="/tasks/toggle/{{ task.id }}/">
-                Complete
-            </a>
+        🔴 OVERDUE
 
-            <a href="/tasks/edit/{{ task.id }}/">
-                Edit
-            </a>
+    {% endif %}
 
-            <a href="/tasks/delete/{{ task.id }}/">
-                Delete
-            </a>
+    ({{ task.subject.name }})
 
-        </li>
+    - Due: {{ task.due_date }}
+
+    - Priority: {{ task.priority }}
+
+    <a href="/tasks/toggle/{{ task.id }}/">
+        Complete
+    </a>
+
+    <a href="/tasks/edit/{{ task.id }}/">
+        Edit
+    </a>
+
+    <a href="/tasks/delete/{{ task.id }}/">
+        Delete
+    </a>
+
+</li>
 
     {% empty %}
 

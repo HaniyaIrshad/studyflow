@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from .models import Subject, Task
 from .forms import SubjectForm, TaskForm
@@ -87,10 +88,11 @@ def tasks(request):
     ).order_by('-created_at')
 
     return render(request, 'tasks.html', {
-        'form': form,
-        'pending_tasks': pending_tasks,
-        'completed_tasks': completed_tasks
-    })
+    'form': form,
+    'pending_tasks': pending_tasks,
+    'completed_tasks': completed_tasks,
+    'today': timezone.now().date()
+})
 
 
 @login_required
