@@ -4,6 +4,16 @@
 
 <h2>Dashboard</h2>
 
-<p>Welcome {{ user.username }}</p>
+<div>
+
+    <p>Total Tasks: {{ total_tasks }}</p>
+
+    <p>Completed Tasks: {{ completed_tasks }}</p>
+
+    <p>Pending Tasks: {{ pending_tasks }}</p>
+
+    <p>Overdue Tasks: {{ overdue_tasks }}</p>
+
+</div>
 
 {% endblock %}
