@@ -15,11 +15,25 @@ class Subject(models.Model):
 
 class Task(models.Model):
 
+    PRIORITY_CHOICES = [
+        ('High', 'High'),
+        ('Medium', 'Medium'),
+        ('Low', 'Low'),
+    ]
+
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=200)
 
     completed = models.BooleanField(default=False)
+
+    due_date = models.DateField(null=True, blank=True)
+
+    priority = models.CharField(
+        max_length=10,
+        choices=PRIORITY_CHOICES,
+        default='Medium'
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
