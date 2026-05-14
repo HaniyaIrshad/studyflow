@@ -5,7 +5,8 @@ from .views import (
     subjects,
     tasks,
     toggle_task,
-    delete_task
+    delete_task,
+    edit_task
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -14,4 +15,5 @@ urlpatterns = [
     path('tasks/', tasks, name='tasks'),
     path('tasks/toggle/<int:task_id>/', toggle_task, name='toggle_task'),
     path('tasks/delete/<int:task_id>/', delete_task, name='delete_task'),
+    path('tasks/edit/<int:task_id>/', edit_task, name='edit_task'),
 ]

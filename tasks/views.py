@@ -122,3 +122,38 @@ def delete_task(request, task_id):
 
     return redirect('tasks')
 
+@login_required
+def edit_task(request, task_id):
+
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        subject__user=request.user
+    )
+
+    if request.method == 'POST':
+
+        form = TaskForm(request.POST, instance=task)
+
+        if form.is_valid():
+
+            updated_task = form.save(commit=False)
+
+            if updated_task.subject.user == request.user:
+
+                updated_task.save()
+
+                return redirect('tasks')
+
+    else:
+
+        form = TaskForm(instance=task)
+
+        form.fields['subject'].queryset = Subject.objects.filter(
+            user=request.user
+        )
+
+    return render(request, 'edit_task.html', {
+        'form': form
+    })
+
