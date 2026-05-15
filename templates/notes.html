@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Notes</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+
+        Add Note
+
+    </button>
+
+</form>
+
+<hr>
+
+{% for note in notes %}
+
+    <h3>{{ note.title }}</h3>
+
+    <p>{{ note.content }}</p>
+
+    <small>{{ note.subject.name }}</small>
+
+    <hr>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Subject,Task
+from .models import Subject,Task, Note
 
 class SubjectForm(forms.ModelForm):
 
@@ -16,3 +16,11 @@ class TaskForm(forms.ModelForm):
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'})
         }
+
+class NoteForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Note
+
+        fields = ['subject', 'title', 'content']

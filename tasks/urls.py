@@ -9,7 +9,9 @@ from .views import (
     delete_task,
     edit_task,
     edit_subject,
-    delete_subject
+    delete_subject,
+    notes,
+    today_tasks
 )
 
 urlpatterns = [
@@ -51,5 +53,10 @@ urlpatterns = [
         edit_task,
         name='edit_task'
     ),
+    path('notes/', notes, name='notes'),
+    path(
+    'today/',today_tasks,
+    name='today_tasks'
+),
 
 ]
