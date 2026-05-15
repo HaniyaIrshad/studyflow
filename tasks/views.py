@@ -11,11 +11,6 @@ def home(request):
 
 
 @login_required
-def dashboard(request):
-    return render(request, 'dashboard.html')
-
-
-@login_required
 def subjects(request):
 
     if request.method == 'POST':
@@ -77,22 +72,69 @@ def tasks(request):
             user=request.user
         )
 
-    pending_tasks = Task.objects.filter(
-        subject__user=request.user,
-        completed=False
-    ).order_by('-created_at')
+    # ALL USER TASKS
+    tasks = Task.objects.filter(
+        subject__user=request.user
+    )
 
-    completed_tasks = Task.objects.filter(
-        subject__user=request.user,
+    # SEARCH
+    search = request.GET.get('search')
+
+    if search:
+        tasks = tasks.filter(
+            title__icontains=search
+        )
+
+    # FILTERS
+    priority = request.GET.get('priority')
+    status = request.GET.get('status')
+    subject = request.GET.get('subject')
+
+    if priority:
+        tasks = tasks.filter(priority=priority)
+
+    if status == 'completed':
+        tasks = tasks.filter(completed=True)
+
+    elif status == 'pending':
+        tasks = tasks.filter(completed=False)
+
+    if subject:
+        tasks = tasks.filter(subject_id=subject)
+
+    # ORDERING
+    tasks = tasks.order_by('-created_at')
+
+    # SEPARATE TASKS
+    pending_tasks = tasks.filter(
+        completed=False
+    )
+
+    completed_tasks = tasks.filter(
         completed=True
-    ).order_by('-created_at')
+    )
 
     return render(request, 'tasks.html', {
-    'form': form,
-    'pending_tasks': pending_tasks,
-    'completed_tasks': completed_tasks,
-    'today': timezone.now().date()
-})
+
+        'form': form,
+
+        'pending_tasks': pending_tasks,
+        'completed_tasks': completed_tasks,
+
+        'today': timezone.now().date(),
+
+        # for dropdown/filter usage
+        'subjects': Subject.objects.filter(
+            user=request.user
+        ),
+
+        'selected_priority': priority,
+        'selected_status': status,
+        'selected_subject': subject,
+
+        # search value
+        'search_query': search,
+    })
 
 
 @login_required
@@ -124,6 +166,7 @@ def delete_task(request, task_id):
 
     return redirect('tasks')
 
+
 @login_required
 def edit_task(request, task_id):
 
@@ -136,6 +179,10 @@ def edit_task(request, task_id):
     if request.method == 'POST':
 
         form = TaskForm(request.POST, instance=task)
+
+        form.fields['subject'].queryset = Subject.objects.filter(
+            user=request.user
+        )
 
         if form.is_valid():
 
@@ -158,7 +205,6 @@ def edit_task(request, task_id):
     return render(request, 'edit_task.html', {
         'form': form
     })
-
 
 
 @login_required
