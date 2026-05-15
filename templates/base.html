@@ -2,38 +2,39 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>StudyFlow</title>
 
-    <!-- Google Fonts -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
           rel="stylesheet">
-
-    <!-- Your CSS file -->
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
 </head>
 
 <body>
 
+<!-- NAVIGATION -->
 <nav>
 
-    <a href="/">Home</a>
+    <a href="{% url 'home' %}">Home</a>
 
     {% if user.is_authenticated %}
 
-        <span style="color: white;">Hello, {{ user.username }}</span>
+        <span style="color: white; font-weight: 500;">
+            Hello, {{ user.username }}
+        </span>
 
-        <a href="/dashboard/">Dashboard</a>
-        <a href="/subjects/">Subjects</a>
-        <a href="/tasks/">Tasks</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'subjects' %}">Subjects</a>
+        <a href="{% url 'tasks' %}">Tasks</a>
+        <a href="{% url 'notes' %}">Notes</a>
+
         <a href="/users/logout/">Logout</a>
 
     {% else %}
@@ -45,28 +46,22 @@
 
 </nav>
 
+<!-- MESSAGES -->
 {% if messages %}
-
     <div class="container">
-
         {% for message in messages %}
-
             <div class="message">
                 {{ message }}
             </div>
-
         {% endfor %}
-
     </div>
-
 {% endif %}
 
-<div class="container">
-
+<!-- MAIN CONTENT -->
+<main class="container">
     {% block content %}
     {% endblock %}
-
-</div>
+</main>
 
 </body>
 </html>

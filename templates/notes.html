@@ -4,10 +4,12 @@
 
 <h2>Notes</h2>
 
+<!-- ADD NOTE -->
 <div class="card">
 
-    <form method="POST">
+    <h3>Add New Note</h3>
 
+    <form method="POST">
         {% csrf_token %}
 
         {{ form.as_p }}
@@ -15,10 +17,12 @@
         <button type="submit">
             Add Note
         </button>
-
     </form>
 
 </div>
+
+<!-- NOTES LIST -->
+<h3>Your Notes</h3>
 
 {% for note in notes %}
 
@@ -34,7 +38,9 @@
 
 {% empty %}
 
-    <p>No notes added yet.</p>
+    <div class="card">
+        <p>No notes added yet.</p>
+    </div>
 
 {% endfor %}
 

@@ -12,9 +12,17 @@
 
         <p>
             {{ task.subject.name }} <br>
-            Due: {{ task.due_date }} <br>
+            Due: {{ task.due_date|default:"No due date" }} <br>
             Priority: {{ task.priority }}
         </p>
+
+        <div class="task-actions">
+
+            <a href="{% url 'toggle_task' task.id %}">Complete</a>
+            <a href="{% url 'edit_task' task.id %}">Edit</a>
+            <a href="{% url 'delete_task' task.id %}">Delete</a>
+
+        </div>
 
     </div>
 

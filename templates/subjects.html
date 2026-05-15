@@ -4,10 +4,12 @@
 
 <h2>Your Subjects</h2>
 
+<!-- ADD SUBJECT -->
 <div class="card">
 
-    <form method="POST">
+    <h3>Add New Subject</h3>
 
+    <form method="POST">
         {% csrf_token %}
 
         {{ form.as_p }}
@@ -15,10 +17,12 @@
         <button type="submit">
             Add Subject
         </button>
-
     </form>
 
 </div>
+
+<!-- SUBJECT LIST -->
+<h3>All Subjects</h3>
 
 {% for subject in subjects %}
 
@@ -42,7 +46,9 @@
 
 {% empty %}
 
-    <p>No subjects added yet.</p>
+    <div class="card">
+        <p>No subjects added yet.</p>
+    </div>
 
 {% endfor %}
 

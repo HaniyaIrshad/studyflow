@@ -1,62 +1,25 @@
 from django.urls import path
-
-from .views import (
-    home,
-    dashboard,
-    subjects,
-    tasks,
-    toggle_task,
-    delete_task,
-    edit_task,
-    edit_subject,
-    delete_subject,
-    notes,
-    today_tasks
-)
+from . import views
 
 urlpatterns = [
+    path('', views.home, name='home'),
 
-    path('', home, name='home'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
-    path('dashboard/', dashboard, name='dashboard'),
+    # Subjects
+    path('subjects/', views.subjects, name='subjects'),
+    path('subjects/edit/<int:subject_id>/', views.edit_subject, name='edit_subject'),
+    path('subjects/delete/<int:subject_id>/', views.delete_subject, name='delete_subject'),
 
-    path('subjects/', subjects, name='subjects'),
+    # Tasks
+    path('tasks/', views.tasks, name='tasks'),
+    path('tasks/toggle/<int:task_id>/', views.toggle_task, name='toggle_task'),
+    path('tasks/edit/<int:task_id>/', views.edit_task, name='edit_task'),
+    path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
 
-    path(
-        'subject/edit/<int:subject_id>/',
-        edit_subject,
-        name='edit_subject'
-    ),
+    # Notes
+    path('notes/', views.notes, name='notes'),
 
-    path(
-        'subject/delete/<int:subject_id>/',
-        delete_subject,
-        name='delete_subject'
-    ),
-
-    path('tasks/', tasks, name='tasks'),
-
-    path(
-        'tasks/toggle/<int:task_id>/',
-        toggle_task,
-        name='toggle_task'
-    ),
-
-    path(
-        'tasks/delete/<int:task_id>/',
-        delete_task,
-        name='delete_task'
-    ),
-
-    path(
-        'tasks/edit/<int:task_id>/',
-        edit_task,
-        name='edit_task'
-    ),
-    path('notes/', notes, name='notes'),
-    path(
-    'today/',today_tasks,
-    name='today_tasks'
-),
-
+    # Today view
+    path('tasks/today/', views.today_tasks, name='today_tasks'),
 ]

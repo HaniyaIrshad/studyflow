@@ -4,7 +4,8 @@
 
 <h2>Dashboard</h2>
 
-<div class="stats">
+<!-- STATS -->
+<section class="stats">
 
     <div class="stat-box">
         <h3>{{ total_tasks }}</h3>
@@ -26,48 +27,60 @@
         <p>Overdue</p>
     </div>
 
-</div>
+</section>
 
-<h3>Recent Tasks</h3>
+<!-- RECENT TASKS -->
+<section>
 
-{% for task in recent_tasks %}
+    <h3>Recent Tasks</h3>
 
-    <div class="card">
+    {% for task in recent_tasks %}
 
-        <strong>{{ task.title }}</strong>
+        <div class="card">
 
-        <p>
-            {% if task.completed %}
-                ✔ Completed
-            {% else %}
-                ✘ Pending
-            {% endif %}
-        </p>
+            <strong>{{ task.title }}</strong>
 
-    </div>
+            <p>
+                {% if task.completed %}
+                    ✔ Completed
+                {% else %}
+                    ✘ Pending
+                {% endif %}
+            </p>
 
-{% empty %}
+        </div>
 
-    <p>No recent tasks</p>
+    {% empty %}
+        <p>No recent tasks</p>
+    {% endfor %}
 
-{% endfor %}
+</section>
 
-<h3>Upcoming Deadlines</h3>
+<!-- UPCOMING TASKS -->
+<section>
 
-{% for task in upcoming_tasks %}
+    <h3>Upcoming Deadlines</h3>
 
-    <div class="card">
+    {% for task in upcoming_tasks %}
 
-        <strong>{{ task.title }}</strong>
+        <div class="card">
 
-        <p>Due: {{ task.due_date }}</p>
+            <strong>{{ task.title }}</strong>
 
-    </div>
+            <p>
+                {% if task.due_date %}
+                    Due: {{ task.due_date }}
+                {% else %}
+                    No due date set
+                {% endif %}
+            </p>
 
-{% empty %}
+        </div>
 
-    <p>No upcoming deadlines</p>
+    {% empty %}
+        <p>No upcoming deadlines</p>
+    {% endfor %}
 
-{% endfor %}
+</section>
 
 {% endblock %}
