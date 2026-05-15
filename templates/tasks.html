@@ -4,179 +4,153 @@
 
 <h2>Your Tasks</h2>
 
-<form method="POST">
+<!-- ADD TASK -->
+<div class="card">
 
-    {% csrf_token %}
+    <form method="POST">
 
-    {{ form.as_p }}
+        {% csrf_token %}
 
-    <button type="submit">Add Task</button>
+        {{ form.as_p }}
 
-</form>
+        <button type="submit">
+            Add Task
+        </button>
 
-<hr>
+    </form>
 
-<h3>Search Tasks</h3>
+</div>
 
-<form method="GET">
+<!-- SEARCH -->
+<div class="card">
 
-    <input type="text"
-           name="search"
-           placeholder="Search tasks"
-           value="{{ search_query }}">
+    <h3>Search Tasks</h3>
 
-    <button type="submit">Search</button>
+    <form method="GET">
 
-</form>
+        <input type="text"
+               name="search"
+               placeholder="Search tasks"
+               value="{{ search_query }}">
 
-<hr>
+        <button type="submit">Search</button>
 
-<h3>Filter Tasks</h3>
+    </form>
 
-<form method="GET">
+</div>
 
-    <select name="priority">
+<!-- FILTER -->
+<div class="card">
 
-        <option value="">All Priorities</option>
+    <h3>Filter Tasks</h3>
 
-        <option value="High"
-            {% if selected_priority == "High" %}selected{% endif %}>
-            High
-        </option>
+    <form method="GET">
 
-        <option value="Medium"
-            {% if selected_priority == "Medium" %}selected{% endif %}>
-            Medium
-        </option>
+        <select name="priority">
 
-        <option value="Low"
-            {% if selected_priority == "Low" %}selected{% endif %}>
-            Low
-        </option>
+            <option value="">All Priorities</option>
 
-    </select>
+            <option value="High" {% if selected_priority == "High" %}selected{% endif %}>High</option>
+            <option value="Medium" {% if selected_priority == "Medium" %}selected{% endif %}>Medium</option>
+            <option value="Low" {% if selected_priority == "Low" %}selected{% endif %}>Low</option>
 
-    <select name="status">
+        </select>
 
-        <option value="">All Status</option>
+        <select name="status">
 
-        <option value="completed"
-            {% if selected_status == "completed" %}selected{% endif %}>
-            Completed
-        </option>
+            <option value="">All Status</option>
 
-        <option value="pending"
-            {% if selected_status == "pending" %}selected{% endif %}>
-            Pending
-        </option>
+            <option value="completed" {% if selected_status == "completed" %}selected{% endif %}>Completed</option>
+            <option value="pending" {% if selected_status == "pending" %}selected{% endif %}>Pending</option>
 
-    </select>
+        </select>
 
-    <select name="subject">
+        <select name="subject">
 
-        <option value="">All Subjects</option>
+            <option value="">All Subjects</option>
 
-        {% for subject in subjects %}
+            {% for subject in subjects %}
 
-            <option value="{{ subject.id }}"
-                {% if selected_subject == subject.id|stringformat:"s" %}
-                    selected
-                {% endif %}>
+                <option value="{{ subject.id }}"
+                    {% if selected_subject == subject.id|stringformat:"s" %}selected{% endif %}>
 
-                {{ subject.name }}
+                    {{ subject.name }}
 
-            </option>
+                </option>
 
-        {% endfor %}
+            {% endfor %}
 
-    </select>
+        </select>
 
-    <button type="submit">Apply Filters</button>
+        <button type="submit">Apply Filters</button>
 
-</form>
+    </form>
 
-<hr>
+</div>
 
+<!-- PENDING TASKS -->
 <h3>Pending Tasks</h3>
 
-<ul>
+{% for task in pending_tasks %}
 
-    {% for task in pending_tasks %}
+    <div class="card">
 
-        <li>
+        <strong>✘ {{ task.title }}</strong>
 
-            ✘ {{ task.title }}
+        {% if task.due_date and task.due_date < today %}
+            <span class="overdue"> 🔴 OVERDUE </span>
+        {% endif %}
 
-            {% if task.due_date and task.due_date < today %}
+        <p>
+            {{ task.subject.name }} <br>
+            Due: {{ task.due_date }} <br>
+            Priority: {{ task.priority }}
+        </p>
 
-                🔴 OVERDUE
+        <div class="task-actions">
 
-            {% endif %}
+            <a href="/tasks/toggle/{{ task.id }}/">Complete</a>
+            <a href="/tasks/edit/{{ task.id }}/">Edit</a>
+            <a href="/tasks/delete/{{ task.id }}/">Delete</a>
 
-            ({{ task.subject.name }})
+        </div>
 
-            - Due: {{ task.due_date }}
+    </div>
 
-            - Priority: {{ task.priority }}
+{% empty %}
 
-            <a href="/tasks/toggle/{{ task.id }}/">
-                Complete
-            </a>
+    <p>No pending tasks.</p>
 
-            <a href="/tasks/edit/{{ task.id }}/">
-                Edit
-            </a>
+{% endfor %}
 
-            <a href="/tasks/delete/{{ task.id }}/">
-                Delete
-            </a>
-
-        </li>
-
-    {% empty %}
-
-        <li>No pending tasks.</li>
-
-    {% endfor %}
-
-</ul>
-
-<hr>
-
+<!-- COMPLETED TASKS -->
 <h3>Completed Tasks</h3>
 
-<ul>
+{% for task in completed_tasks %}
 
-    {% for task in completed_tasks %}
+    <div class="card">
 
-        <li>
+        <strong class="completed">✔ {{ task.title }}</strong>
 
-            ✔ <s>{{ task.title }}</s>
+        <p>
+            {{ task.subject.name }} <br>
+            Priority: {{ task.priority }}
+        </p>
 
-            ({{ task.subject.name }})
+        <div class="task-actions">
 
-            - Priority: {{ task.priority }}
+            <a href="/tasks/toggle/{{ task.id }}/">Undo</a>
+            <a href="/tasks/edit/{{ task.id }}/">Edit</a>
+            <a href="/tasks/delete/{{ task.id }}/">Delete</a>
 
-            <a href="/tasks/toggle/{{ task.id }}/">
-                Undo
-            </a>
+        </div>
 
-            <a href="/tasks/edit/{{ task.id }}/">
-                Edit
-            </a>
+    </div>
 
-            <a href="/tasks/delete/{{ task.id }}/">
-                Delete
-            </a>
+{% empty %}
 
-        </li>
+    <p>No completed tasks.</p>
 
-    {% empty %}
-
-        <li>No completed tasks.</li>
-
-    {% endfor %}
-
-</ul>
+{% endfor %}
 
 {% endblock %}

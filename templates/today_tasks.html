@@ -4,22 +4,26 @@
 
 <h2>Today's Tasks</h2>
 
-<ul>
-
 {% for task in tasks %}
 
-    <li>
+    <div class="card">
 
-        {{ task.title }}
+        <strong>{{ task.title }}</strong>
 
-    </li>
+        <p>
+            {{ task.subject.name }} <br>
+            Due: {{ task.due_date }} <br>
+            Priority: {{ task.priority }}
+        </p>
+
+    </div>
 
 {% empty %}
 
-    <li>No tasks today</li>
+    <div class="card">
+        No tasks today
+    </div>
 
 {% endfor %}
-
-</ul>
 
 {% endblock %}

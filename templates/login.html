@@ -2,16 +2,24 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<div class="card" style="max-width: 450px; margin: 50px auto; text-align: center;">
 
-<form method="POST">
+    <h2>Login</h2>
 
-    {% csrf_token %}
+    <form method="POST">
 
-    {{ form.as_p }}
+        {% csrf_token %}
 
-    <button type="submit">Login</button>
+        <div style="text-align: left;">
+            {{ form.as_p }}
+        </div>
 
-</form>
+        <button type="submit" style="width: 100%;">
+            Login
+        </button>
 
-{% endblock %}python manage.py runserver
+    </form>
+
+</div>
+
+{% endblock %}

@@ -4,31 +4,37 @@
 
 <h2>Notes</h2>
 
-<form method="POST">
+<div class="card">
 
-    {% csrf_token %}
+    <form method="POST">
 
-    {{ form.as_p }}
+        {% csrf_token %}
 
-    <button type="submit">
+        {{ form.as_p }}
 
-        Add Note
+        <button type="submit">
+            Add Note
+        </button>
 
-    </button>
+    </form>
 
-</form>
-
-<hr>
+</div>
 
 {% for note in notes %}
 
-    <h3>{{ note.title }}</h3>
+    <div class="card">
 
-    <p>{{ note.content }}</p>
+        <h3>{{ note.title }}</h3>
 
-    <small>{{ note.subject.name }}</small>
+        <p>{{ note.content }}</p>
 
-    <hr>
+        <small>Subject: {{ note.subject.name }}</small>
+
+    </div>
+
+{% empty %}
+
+    <p>No notes added yet.</p>
 
 {% endfor %}
 

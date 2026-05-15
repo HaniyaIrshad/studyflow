@@ -2,30 +2,40 @@
 
 {% block content %}
 
-<h1>StudyFlow</h1>
+<div class="card" style="text-align: center; padding: 50px;">
 
-<p>
+    <h1 style="font-size: 42px; margin-bottom: 10px;">
+        StudyFlow
+    </h1>
 
-Manage your study life efficiently.
+    <p style="font-size: 18px; opacity: 0.8; margin-bottom: 30px;">
+        Manage your study life efficiently. Organize tasks, track progress, and stay consistent every day.
+    </p>
 
-</p>
+    {% if user.is_authenticated %}
 
-{% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}">
+            <button>
+                Go to Dashboard
+            </button>
+        </a>
 
-<a href="{% url 'dashboard' %}">
+    {% else %}
 
-Go to Dashboard
+        <a href="{% url 'login' %}">
+            <button>
+                Login to Continue
+            </button>
+        </a>
 
-</a>
+        <a href="{% url 'signup' %}">
+            <button style="margin-left: 10px; background-color: #5c433d;">
+                Create Account
+            </button>
+        </a>
 
-{% else %}
+    {% endif %}
 
-<a href="{% url 'login' %}">
-
-Login
-
-</a>
-
-{% endif %}
+</div>
 
 {% endblock %}

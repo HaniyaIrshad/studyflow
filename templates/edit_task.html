@@ -2,18 +2,22 @@
 
 {% block content %}
 
-<h2>Edit Task</h2>
+<div class="card">
 
-<form method="POST">
+    <h2>Edit Task</h2>
 
-    {% csrf_token %}
+    <form method="POST">
 
-    {{ form.as_p }}
+        {% csrf_token %}
 
-    <button type="submit">
-        Save Changes
-    </button>
+        {{ form.as_p }}
 
-</form>
+        <button type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}

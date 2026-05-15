@@ -4,25 +4,29 @@
 
 <h2>Your Subjects</h2>
 
-<form method="POST">
+<div class="card">
 
-    {% csrf_token %}
+    <form method="POST">
 
-    {{ form.as_p }}
+        {% csrf_token %}
 
-    <button type="submit">Add Subject</button>
+        {{ form.as_p }}
 
-</form>
+        <button type="submit">
+            Add Subject
+        </button>
 
-<hr>
+    </form>
 
-<ul>
+</div>
 
-    {% for subject in subjects %}
+{% for subject in subjects %}
 
-        <li>
+    <div class="card">
 
-            {{ subject.name }}
+        <h3>{{ subject.name }}</h3>
+
+        <div class="task-actions">
 
             <a href="{% url 'edit_subject' subject.id %}">
                 Edit
@@ -32,14 +36,14 @@
                 Delete
             </a>
 
-        </li>
+        </div>
 
-    {% empty %}
+    </div>
 
-        <li>No subjects added yet.</li>
+{% empty %}
 
-    {% endfor %}
+    <p>No subjects added yet.</p>
 
-</ul>
+{% endfor %}
 
 {% endblock %}
