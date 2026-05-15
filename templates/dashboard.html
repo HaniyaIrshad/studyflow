@@ -4,16 +4,68 @@
 
 <h2>Dashboard</h2>
 
-<div>
+<hr>
 
-    <p>Total Tasks: {{ total_tasks }}</p>
+<h3>Statistics</h3>
 
-    <p>Completed Tasks: {{ completed_tasks }}</p>
+<p>Total Tasks: {{ total_tasks }}</p>
 
-    <p>Pending Tasks: {{ pending_tasks }}</p>
+<p>Completed Tasks: {{ completed_tasks }}</p>
 
-    <p>Overdue Tasks: {{ overdue_tasks }}</p>
+<p>Pending Tasks: {{ pending_tasks }}</p>
 
-</div>
+<p>Overdue Tasks: {{ overdue_tasks }}</p>
+
+<hr>
+
+<h3>Recent Tasks</h3>
+
+<ul>
+
+{% for task in recent_tasks %}
+
+    <li>
+
+        {{ task.title }}
+
+        {% if task.completed %}
+            ✔ Completed
+        {% else %}
+            ✘ Pending
+        {% endif %}
+
+    </li>
+
+{% empty %}
+
+    <li>No recent tasks</li>
+
+{% endfor %}
+
+</ul>
+
+<hr>
+
+<h3>Upcoming Deadlines</h3>
+
+<ul>
+
+{% for task in upcoming_tasks %}
+
+    <li>
+
+        {{ task.title }}
+
+        - {{ task.due_date }}
+
+    </li>
+
+{% empty %}
+
+    <li>No upcoming deadlines</li>
+
+{% endfor %}
+
+</ul>
 
 {% endblock %}

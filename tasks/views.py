@@ -159,22 +159,46 @@ def edit_task(request, task_id):
         'form': form
     })
 
+
+
 @login_required
 def dashboard(request):
 
-    user_tasks = Task.objects.filter(subject__user=request.user)
+    user_tasks = Task.objects.filter(
+        subject__user=request.user
+    )
 
     total_tasks = user_tasks.count()
-    completed_tasks = user_tasks.filter(completed=True).count()
-    pending_tasks = user_tasks.filter(completed=False).count()
+
+    completed_tasks = user_tasks.filter(
+        completed=True
+    ).count()
+
+    pending_tasks = user_tasks.filter(
+        completed=False
+    ).count()
+
     overdue_tasks = user_tasks.filter(
         completed=False,
         due_date__lt=timezone.now().date()
     ).count()
 
+    recent_tasks = user_tasks.order_by(
+        '-created_at'
+    )[:5]
+
+    upcoming_tasks = user_tasks.filter(
+        completed=False,
+        due_date__gte=timezone.now().date()
+    ).order_by('due_date')[:5]
+
     return render(request, 'dashboard.html', {
+
         'total_tasks': total_tasks,
         'completed_tasks': completed_tasks,
         'pending_tasks': pending_tasks,
         'overdue_tasks': overdue_tasks,
+
+        'recent_tasks': recent_tasks,
+        'upcoming_tasks': upcoming_tasks,
     })
