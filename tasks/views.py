@@ -42,6 +42,42 @@ def subjects(request):
 
 
 @login_required
+def edit_subject(request, subject_id):
+
+    subject = get_object_or_404(
+        Subject,
+        id=subject_id,
+        user=request.user
+    )
+
+    if request.method == 'POST':
+
+        subject.name = request.POST.get('name')
+
+        subject.save()
+
+        return redirect('tasks')
+
+    return render(request, 'edit_subject.html', {
+        'subject': subject
+    })
+
+
+@login_required
+def delete_subject(request, subject_id):
+
+    subject = get_object_or_404(
+        Subject,
+        id=subject_id,
+        user=request.user
+    )
+
+    subject.delete()
+
+    return redirect('tasks')
+
+
+@login_required
 def tasks(request):
 
     if request.method == 'POST':
@@ -81,6 +117,7 @@ def tasks(request):
     search = request.GET.get('search')
 
     if search:
+
         tasks = tasks.filter(
             title__icontains=search
         )
@@ -91,19 +128,34 @@ def tasks(request):
     subject = request.GET.get('subject')
 
     if priority:
-        tasks = tasks.filter(priority=priority)
+
+        tasks = tasks.filter(
+            priority=priority
+        )
 
     if status == 'completed':
-        tasks = tasks.filter(completed=True)
+
+        tasks = tasks.filter(
+            completed=True
+        )
 
     elif status == 'pending':
-        tasks = tasks.filter(completed=False)
+
+        tasks = tasks.filter(
+            completed=False
+        )
 
     if subject:
-        tasks = tasks.filter(subject_id=subject)
+
+        tasks = tasks.filter(
+            subject_id=subject
+        )
 
     # ORDERING
-    tasks = tasks.order_by('-created_at')
+    tasks = tasks.order_by(
+        'completed',
+        '-created_at'
+    )
 
     # SEPARATE TASKS
     pending_tasks = tasks.filter(
@@ -123,7 +175,6 @@ def tasks(request):
 
         'today': timezone.now().date(),
 
-        # for dropdown/filter usage
         'subjects': Subject.objects.filter(
             user=request.user
         ),
@@ -132,7 +183,6 @@ def tasks(request):
         'selected_status': status,
         'selected_subject': subject,
 
-        # search value
         'search_query': search,
     })
 
@@ -178,7 +228,10 @@ def edit_task(request, task_id):
 
     if request.method == 'POST':
 
-        form = TaskForm(request.POST, instance=task)
+        form = TaskForm(
+            request.POST,
+            instance=task
+        )
 
         form.fields['subject'].queryset = Subject.objects.filter(
             user=request.user
@@ -186,7 +239,9 @@ def edit_task(request, task_id):
 
         if form.is_valid():
 
-            updated_task = form.save(commit=False)
+            updated_task = form.save(
+                commit=False
+            )
 
             if updated_task.subject.user == request.user:
 
@@ -196,7 +251,9 @@ def edit_task(request, task_id):
 
     else:
 
-        form = TaskForm(instance=task)
+        form = TaskForm(
+            instance=task
+        )
 
         form.fields['subject'].queryset = Subject.objects.filter(
             user=request.user

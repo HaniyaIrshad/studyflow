@@ -20,7 +20,19 @@
 
     {% for subject in subjects %}
 
-        <li>{{ subject.name }}</li>
+        <li>
+
+            {{ subject.name }}
+
+            <a href="{% url 'edit_subject' subject.id %}">
+                Edit
+            </a>
+
+            <a href="{% url 'delete_subject' subject.id %}">
+                Delete
+            </a>
+
+        </li>
 
     {% empty %}
 
