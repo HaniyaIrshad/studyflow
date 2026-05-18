@@ -96,12 +96,12 @@ python manage.py runserver
 ```text
 StudyFlow/
 │
-├── config/          # Project settings
-├── tasks/           # Task and subject management app
-├── users/           # Authentication system
-├── templates/       # HTML templates
-├── static/          # CSS and static files
-├── media/           # Media files
+├── config/          
+├── tasks/           
+├── users/           
+├── templates/       
+├── static/          
+├── media/           
 ├── manage.py
 ├── db.sqlite3
 └── README.md
